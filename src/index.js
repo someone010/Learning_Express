@@ -29,7 +29,13 @@ app.get("/api/users/:id", (req, res) => {
   const {
     params: { id },
   } = req;
-  console.log(id);
+  const parsedId = parseInt(id);
+  if (isNaN(parsedId)) {
+    return res.status(400).send({ msg: "Bad Request. Invalid ID" });
+  }
+  const findUser = mockUser.find((user) => user.id === parsedId);
+  if (!findUser) return res.sendStatus(404);
+  return res.send(findUser);
 });
 
 app.listen(PORT, () => {
