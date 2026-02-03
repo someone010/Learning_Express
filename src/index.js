@@ -20,9 +20,9 @@ app.get("/", (req, res) => {
   res.status(200).send("Hello, World");
 });
 
-app.get("/api/users", (req, res) => {
-  res.status(200).send(mockUser);
-});
+// app.get("/api/users", (req, res) => {
+//   res.status(200).send(mockUser);
+// });
 
 //Route Params
 app.get("/api/users/:id", (req, res) => {
@@ -36,6 +36,17 @@ app.get("/api/users/:id", (req, res) => {
   const findUser = mockUser.find((user) => user.id === parsedId);
   if (!findUser) return res.sendStatus(404);
   return res.send(findUser);
+});
+
+//Query Params
+app.get("/api/users", (req, res) => {
+  const {
+    query: { filter, value },
+  } = req;
+  if (!filter && !value) return res.send(mockUser);
+  if (filter && value) {
+    return res.send(mockUser.filter((user) => user[filter].includes(value)));
+  }
 });
 
 app.listen(PORT, () => {
