@@ -24,6 +24,14 @@ app.get("/api/users", (req, res) => {
   res.status(200).send(mockUser);
 });
 
+//Route Params
+app.get("/api/users/:id", (req, res) => {
+  const {
+    params: { id },
+  } = req;
+  console.log(id);
+});
+
 app.listen(PORT, () => {
   console.log(`Running on port ${PORT}`);
 });
