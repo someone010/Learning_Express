@@ -59,6 +59,22 @@ app.post("/api/users", (req, res) => {
   return res.status(201).send(newUser);
 });
 
+//Put Request
+app.put("/api/users/:id", (req, res) => {
+  const {
+    body,
+    params: { id },
+  } = req;
+  const parsedId = parseInt(id);
+  if (isNaN(parsedId)) return res.sendStatus(400);
+
+  const findUserIndex = mockUser.findIndex((user) => user.id === parsedId);
+  if (findUserIndex === -1) return res.sendStatus(404);
+
+  mockUser[findUserIndex] = { id: parsedId, ...body };
+  res.send(mockUser[findUserIndex]);
+});
+
 app.listen(PORT, () => {
   console.log(`Running on port ${PORT}`);
 });
